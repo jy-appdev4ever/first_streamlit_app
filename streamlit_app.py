@@ -116,9 +116,25 @@ if streamlit.button('Get Fruit Load List'):
 # don't run anything past here while we troubleshoot
 streamlit.stop()
 
+# #allow the end user to add a fruit to the list
+# add_my_fruit = streamlit.text_input('What fruit would you like to add?','Kiwi')
+# streamlit.write('Thanks for adding ', add_my_fruit)
+
+
+# #this will not work correctly, but just go with it for now
+# my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+
 #allow the end user to add a fruit to the list
-add_my_fruit = streamlit.text_input('What fruit would you like to add?','Kiwi')
-streamlit.write('Thanks for adding ', add_my_fruit)
+def insert_row_snowflake(new_fruit):
+   with my_cnx.cursor() as my_cur:
+        my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+        return 'Thanks for adding ' + new_fruit
+      
+add_my_fruit = streamlit.text_input('What fruit would you like to add?')
+if streamlit.button('Add a fruit to the list'):
+    my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+    back_from_function = insert_row_snowflake(add_my_fruit)
+    streamlit.text(back_from_function)
 
 
 #this will not work correctly, but just go with it for now
